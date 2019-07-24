@@ -53,6 +53,8 @@ def hexadecimal(message):
     decryptedAscii = ""
     decryptedDecimal = ""
     decryptedAlph = ""
+    while len(encrypted) % 2 != 0:
+        encrypted += "0"
     for i in range(0, len(encrypted), 2):
         tempOctet = encrypted[i:i + 2]
         decryptedAscii += bytes.fromhex(tempOctet).decode(errors='replace')
