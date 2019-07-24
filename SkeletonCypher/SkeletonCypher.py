@@ -23,6 +23,31 @@ def rot(message):
         print (decrypted + " - rot " + str(key))
         decrypted = ""
 
+# Converts decimal input to its Ascii and letter translations 
+def decimal(message):
+    encrypted = message
+    decryptedAscii = ""
+    decryptedAlph = ""
+    tempNum = ""
+    for i in range(len(encrypted)):
+        if encrypted[i].isdigit():
+            tempNum += encrypted[i]
+        if not encrypted[i].isdigit() or i == len(encrypted) - 1:
+            if tempNum != "":
+                tempNum = int(tempNum)
+                if tempNum > 255 or tempNum == 0:
+                    tempNum = ""
+                    continue
+                decryptedAscii += chr(tempNum)
+                while tempNum > 26:
+                    tempNum = tempNum - 26
+                decryptedAlph += alph[tempNum - 1]
+
+                tempNum = ""
+
+    print (decryptedAscii + " - Decimal to Ascii")
+    print (decryptedAlph + " - Decimal to Alphabet")
+
 # Converts binary input to its translation in Ascii, decimal, and letter
 def binary(message):
     encrypted = re.sub("[^0-1]", "", message)
@@ -78,6 +103,8 @@ def main():
     message = input("Enter encrypted text: ")
     if re.search('[a-zA-Z]', message):
         rot(message)
+    if re.search('[0-9]', message):
+        decimal(message)
     if not re.search('[2-9a-zA-Z]', message):
         binary(message)
     if not re.search('[g-zG-Z]', message):
