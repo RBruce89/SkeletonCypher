@@ -47,6 +47,30 @@ def binary(message):
     print (decryptedDecimal + " - Binary to Decimal")
     print (decryptedAlph + " - Binary to Alphabet")
 
+# Converts hexadecimal input to its translations in Ascii, decimal, and letter
+def hexadecimal(message):
+    encrypted = re.sub("[^0-9a-fA-F]", "", message)
+    decryptedAscii = ""
+    decryptedDecimal = ""
+    decryptedAlph = ""
+    for i in range(0, len(encrypted), 2):
+        tempOctet = encrypted[i:i + 2]
+        decryptedAscii += bytes.fromhex(tempOctet).decode(errors='replace')
+        tempOctet = int(tempOctet, 16)
+        if decryptedDecimal == "":
+            decryptedDecimal += str(tempOctet)
+        else:
+            decryptedDecimal += "-" + str(tempOctet)
+        if tempOctet == 0:
+            continue
+        while tempOctet > 26:
+            tempOctet = tempOctet - 26
+        decryptedAlph += alph[tempOctet - 1]
+
+    print (decryptedAscii + " - Hexadecimal to Ascii")
+    print (decryptedDecimal + " - Hexadecimal to Decimal")
+    print (decryptedAlph + " - Hexadecimal to Alphabet")
+
 # Accepts encrypted message, determines possible encryption types, and runs it through applicable decrypters
 def main():
     message = input("Enter encrypted text: ")
@@ -54,6 +78,8 @@ def main():
         rot(message)
     if not re.search('[2-9a-zA-Z]', message):
         binary(message)
+    if not re.search('[g-zG-Z]', message):
+        hexadecimal(message)
     main()
 
 main()
