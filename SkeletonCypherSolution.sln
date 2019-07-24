@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2019
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "SkeletonCypher", "SkeletonCypher\SkeletonCypher.pyproj", "{36F2A94C-E6FA-4B07-B420-DDD54C310B66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36F2A94C-E6FA-4B07-B420-DDD54C310B66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36F2A94C-E6FA-4B07-B420-DDD54C310B66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FB4044B4-D8FD-4613-B27D-EAAE5DFCD4A7}
+	EndGlobalSection
+EndGlobal
