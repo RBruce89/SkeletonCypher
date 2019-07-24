@@ -1,5 +1,7 @@
 import re
 
+solutions = []
+
 alph = "abcdefghijklmnopqrstuvwxyz"
 
 # Runs every letter in input through all 25 possible rotation cyphers
@@ -20,7 +22,7 @@ def rot(message):
                         decrypted += alph[i + key]
                         break
 
-        print (decrypted + " - rot " + str(key))
+        solutions.append((decrypted, "rot" + str(key)))
         decrypted = ""
 
 # Converts decimal input to its Ascii and letter translations 
@@ -45,8 +47,8 @@ def decimal(message):
 
                 tempNum = ""
 
-    print (decryptedAscii + " - Decimal to Ascii")
-    print (decryptedAlph + " - Decimal to Alphabet")
+    solutions.append((decryptedAscii, "Decimal to Ascii"))
+    solutions.append((decryptedAlph, "Decimal to Alphabet"))
 
 # Converts binary input to its translation in Ascii, decimal, and letter
 def binary(message):
@@ -68,9 +70,9 @@ def binary(message):
             tempOctet = tempOctet - 26
         decryptedAlph += alph[tempOctet - 1]
 
-    print (decryptedAscii + " - Binary to Ascii")
-    print (decryptedDecimal + " - Binary to Decimal")
-    print (decryptedAlph + " - Binary to Alphabet")
+    solutions.append((decryptedAscii, "Binary to Ascii"))
+    solutions.append((decryptedDecimal, "Binary to Decimal"))
+    solutions.append((decryptedAlph, "Binary to Alphabet"))
 
 # Converts hexadecimal input to its translations in Ascii, decimal, and letter
 def hexadecimal(message):
@@ -94,9 +96,9 @@ def hexadecimal(message):
             tempOctet = tempOctet - 26
         decryptedAlph += alph[tempOctet - 1]
 
-    print (decryptedAscii + " - Hexadecimal to Ascii")
-    print (decryptedDecimal + " - Hexadecimal to Decimal")
-    print (decryptedAlph + " - Hexadecimal to Alphabet")
+    solutions.append((decryptedAscii, "Hexadecimal to Ascii"))
+    solutions.append((decryptedDecimal, "Hexadecimal to Decimal"))
+    solutions.append((decryptedAlph, "Hexadecimal to Alphabet"))
 
 # Accepts encrypted message, determines possible encryption types, and runs it through applicable decrypters
 def main():
@@ -109,6 +111,16 @@ def main():
         binary(message)
     if not re.search('[g-zG-Z]', message):
         hexadecimal(message)
+    
+    for entry in range(len(solutions)):
+        print (solutions[entry][0] + " - " + solutions[entry][1])
+    solutions.clear()
+
     main()
+
+def display():
+    for entry in range(len(solutions)):
+        print (solutions[entry][0] + " - " + solutions[entry][1])
+    solutions.clear()
 
 main()
