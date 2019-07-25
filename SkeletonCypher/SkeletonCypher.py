@@ -74,6 +74,36 @@ def binary(message):
     solutions.append((decryptedDecimal, "Binary to Decimal"))
     solutions.append((decryptedAlph, "Binary to Alphabet"))
 
+# Converts octal input to its translations in Ascii, decimal, and letter 
+def octal(message):
+    encrypted = message
+    decryptedAscii = ""
+    decryptedDecimal = ""
+    decryptedAlph = ""
+    tempNum = ""
+    for i in range(len(encrypted)):
+        if re.search('[0-7]', message[i]):
+            tempNum += encrypted[i]
+        if not re.search('[0-7]', message[i]) or len(tempNum) == 3 or i == len(encrypted) - 1:
+            if tempNum != "":
+                tempOctet = int(tempNum, 8)
+                tempNum = ""
+                if tempOctet > 255 or tempOctet == 0:
+                    tempOctet = ""
+                    continue
+                decryptedAscii += chr(tempOctet)
+                if decryptedDecimal == "":
+                    decryptedDecimal += str(tempOctet)
+                else:
+                    decryptedDecimal += "-" + str(tempOctet)
+                while tempOctet > 26:
+                    tempOctet = tempOctet - 26
+                decryptedAlph += alph[tempOctet - 1]
+
+    solutions.append((decryptedAscii, "Octal to Ascii"))
+    solutions.append((decryptedDecimal, "Octal to Decimal"))
+    solutions.append((decryptedAlph, "Octal to Alphabet"))
+
 # Converts hexadecimal input to its translations in Ascii, decimal, and letter
 def hexadecimal(message):
     encrypted = re.sub("[^0-9a-fA-F]", "", message)
@@ -100,6 +130,13 @@ def hexadecimal(message):
     solutions.append((decryptedDecimal, "Hexadecimal to Decimal"))
     solutions.append((decryptedAlph, "Hexadecimal to Alphabet"))
 
+# print every decrypted solution
+def display():
+    for entry in range(len(solutions)):
+        print (solutions[entry][0] + " - " + solutions[entry][1])
+    print ("\n")
+    solutions.clear()
+
 # Accepts encrypted message, determines possible encryption types, and runs it through applicable decrypters
 def main():
     message = input("Enter encrypted text: ")
@@ -109,18 +146,13 @@ def main():
         decimal(message)
     if not re.search('[2-9a-zA-Z]', message):
         binary(message)
+    if not re.search('[8-9a-zA-z]', message):
+        octal(message)
     if not re.search('[g-zG-Z]', message):
         hexadecimal(message)
     
-    for entry in range(len(solutions)):
-        print (solutions[entry][0] + " - " + solutions[entry][1])
-    solutions.clear()
+    display()
 
     main()
-
-def display():
-    for entry in range(len(solutions)):
-        print (solutions[entry][0] + " - " + solutions[entry][1])
-    solutions.clear()
 
 main()
