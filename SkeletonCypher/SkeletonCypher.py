@@ -1,4 +1,5 @@
 import re
+import base64
 
 solutions = []
 
@@ -82,13 +83,13 @@ def octal(message):
     decryptedAlph = ""
     tempNum = ""
     for i in range(len(encrypted)):
-        if re.search('[0-7]', message[i]):
+        if re.search('[0-7]', encrypted[i]):
             tempNum += encrypted[i]
-        if not re.search('[0-7]', message[i]) or len(tempNum) == 3 or i == len(encrypted) - 1:
+        if not re.search('[0-7]', encrypted[i]) or len(tempNum) == 3 or i == len(encrypted) - 1:
             if tempNum != "":
                 tempOctet = int(tempNum, 8)
                 tempNum = ""
-                if tempOctet > 255 or tempOctet == 0:
+                if tempOctet > 511 or tempOctet == 0:
                     tempOctet = ""
                     continue
                 decryptedAscii += chr(tempOctet)
@@ -130,6 +131,20 @@ def hexadecimal(message):
     solutions.append((decryptedDecimal, "Hexadecimal to Decimal"))
     solutions.append((decryptedAlph, "Hexadecimal to Alphabet"))
 
+# Converts base64 input to its Ascii and decimal translations
+def base64Conversions(message):
+    encrypted = re.sub("[^0-9a-zA-Z+/]", "", message)
+    decryptedAscii = ""
+    decryptedDecimal = ""
+    try:
+        decryptedAscii = base64.b64decode(message + "=====").decode(errors='replace')
+        decryptedDecimal = str(int.from_bytes(base64.b64decode(message + "====="), 'big'))
+    except:
+        pass
+
+    solutions.append((decryptedAscii, "Base64 to Ascii"))
+    solutions.append((decryptedDecimal, "Base64 to Decimal"))
+
 # print every decrypted solution
 def display():
     for entry in range(len(solutions)):
@@ -150,6 +165,8 @@ def main():
         octal(message)
     if not re.search('[g-zG-Z]', message):
         hexadecimal(message)
+    if re.search('[A-Za-z0-9+/]', message):
+        base64Conversions(message)
     
     display()
 
