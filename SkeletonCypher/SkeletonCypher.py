@@ -131,6 +131,20 @@ def hexadecimal(message):
     solutions.append((decryptedDecimal, "Hexadecimal to Decimal"))
     solutions.append((decryptedAlph, "Hexadecimal to Alphabet"))
 
+# Converts base32 input to its Ascii and decimal translations
+def base32Conversions(message):
+    encrypted = re.sub("[^2-7A-Z=]", "", message)
+    decryptedAscii = ""
+    decryptedDecimal = ""
+    try:
+        decryptedAscii = base64.b32decode(message).decode(errors='replace')
+        decryptedDecimal = str(int.from_bytes(base64.b32decode(message), 'big'))
+    except:
+        pass
+
+    solutions.append((decryptedAscii, "Base32 to Ascii"))
+    solutions.append((decryptedDecimal, "Base32 to Decimal"))
+
 # Converts base64 input to its Ascii and decimal translations
 def base64Conversions(message):
     encrypted = re.sub("[^0-9a-zA-Z+/]", "", message)
@@ -165,6 +179,8 @@ def main():
         octal(message)
     if not re.search('[g-zG-Z]', message):
         hexadecimal(message)
+    if re.search('[A-Z2-7]', message):
+        base32Conversions(message)
     if re.search('[A-Za-z0-9+/]', message):
         base64Conversions(message)
     
