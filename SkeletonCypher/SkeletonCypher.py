@@ -159,6 +159,20 @@ def base64Conversions(message):
     solutions.append((decryptedAscii, "Base64 to Ascii"))
     solutions.append((decryptedDecimal, "Base64 to Decimal"))
 
+# Converts ascii85 input to its Ascii and decimal translations
+def ascii85Conversions(message):
+    encrypted = re.sub("[^!-u]", "", message)
+    decryptedAscii = ""
+    decryptedDecimal = ""
+    try:
+        decryptedAscii = base64.a85decode(message).decode(errors='replace')
+        decryptedDecimal = str(int.from_bytes(base64.a85decode(message), 'big'))
+    except:
+        pass
+
+    solutions.append((decryptedAscii, "Ascii85 to Ascii"))
+    solutions.append((decryptedDecimal, "Ascii85 to Decimal"))
+
 # print every decrypted solution
 def display():
     for entry in range(len(solutions)):
@@ -183,6 +197,8 @@ def main():
         base32Conversions(message)
     if re.search('[A-Za-z0-9+/]', message):
         base64Conversions(message)
+    if re.search('[!-u]', message):
+        ascii85Conversions(message)
     
     display()
 

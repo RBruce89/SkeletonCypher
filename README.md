@@ -12,6 +12,7 @@ Skeleton Cypher was inspired by ARGs, which often use simple but varied methods 
 * Hexadecimal
 * Base 32
 * Base 64
+* Ascii 85
 
 ## Technical information
 
