@@ -26,6 +26,67 @@ def rot(message):
         solutions.append((decrypted, "rot" + str(key)))
         decrypted = ""
 
+# Deciphers Morse code
+def morse(message):
+    encrypted = re.sub("_", "-", message)
+    encrypted = re.sub("\\|", "/", encrypted)
+    decrypted = ""
+    tempChar = ""
+    for i in range(len(encrypted)):
+        if encrypted[i] == "." or encrypted[i] == "-":
+            tempChar += encrypted[i]
+        if encrypted[i] != "-" and encrypted[i] != "."  or i == len(encrypted) - 1:
+            if tempChar != "":
+                morseSwitcher = {
+                ".": "e",
+                "-": "t",
+                ".-": "a",
+                "---": "o",
+                "..": "i",
+                "-.": "n",
+                "...": "s",
+                ".-.": "r",
+                "....": "h",
+                "-..": "d",
+                ".-..": "l",
+                "..-": "u",
+                "-.-.": "c",
+                "--": "m",
+                "..-.": "f",
+                "-.--": "y",
+                ".--": "w",
+                "--.": "g",
+                ".--.": "p",
+                "-...": "b",
+                "...-": "v",
+                "-.-": "k",
+                "-..-": "x",
+                "--.-": "q",
+                ".---": "j",
+                "--..": "z",
+                "-----": "0",
+                ".----": "1",
+                "..---": "2",
+                "...--": "3",
+                "....-": "4",
+                ".....": "5",
+                "-....": "6",
+                "--...": "7",
+                "---..": "8",
+                "----.": "9",
+                ".-.-.-": ".",
+                "--..--": ",",
+                "..--..": "?",
+                }
+                decrypted += morseSwitcher.get(tempChar, " ")
+
+                tempChar = ""
+
+            if encrypted[i] == "/":
+                decrypted += " "
+
+    solutions.append((decrypted, "Morse code"))
+
 # Converts decimal input to its Ascii and letter translations 
 def decimal(message):
     encrypted = message
@@ -185,6 +246,8 @@ def main():
     message = input("Enter encrypted text: ")
     if re.search('[a-zA-Z]', message):
         rot(message)
+    if re.search('[.-]', message):
+        morse(message)
     if re.search('[0-9]', message):
         decimal(message)
     if not re.search('[2-9a-zA-Z]', message):
