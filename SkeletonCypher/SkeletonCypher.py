@@ -1,5 +1,8 @@
+import sqlite3
 import re
 import base64
+
+wordsConnection = sqlite3.connect('words.db')
 
 solutions = []
 
