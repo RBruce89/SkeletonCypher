@@ -237,6 +237,18 @@ def ascii85Conversions(message):
     solutions.append((decryptedAscii, "Ascii85 to Ascii"))
     solutions.append((decryptedDecimal, "Ascii85 to Decimal"))
 
+#Checks if the given string is a valid word
+def wordCheck(possibleWord):
+    inputWord = possibleWord.lower()
+    cur = wordsConnection.cursor()
+    cur.execute("SELECT * FROM WORDS WHERE FIRSTLETTER=?", (inputWord[:1]))
+    words = cur.fetchall()
+
+    for word in words:
+        if word[0] == inputWord:
+            return True
+    return False
+
 # print every decrypted solution
 def display():
     for entry in range(len(solutions)):
