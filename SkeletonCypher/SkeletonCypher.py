@@ -291,7 +291,25 @@ def display():
         if solutionCheck(solutions[entry][0]):
             print (solutions[entry][0] + " - " + solutions[entry][1])
     print ("\n")
-    main()
+    optionsTree()
+
+# Presents user with options on how to continue
+def optionsTree():
+    print ("To show all solutions press: A")
+    print ("To decrypt another message press: M")
+    print ("To exit press: E")
+    choice = input(": ")
+    if choice.upper() == "A":
+        for entry in range(len(solutions)):
+            print (solutions[entry][0] + " - " + solutions[entry][1])
+        print ("\n")
+        optionsTree()
+    if choice.upper() == "M":
+        solutions.clear()
+        print ("\n")
+        main()
+    if choice.upper() == "E":
+        sys.exit(0)
 
 # Accepts encrypted message, determines possible encryption types, and runs it through applicable decrypters
 def main():
