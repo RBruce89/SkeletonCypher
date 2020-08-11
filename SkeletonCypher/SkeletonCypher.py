@@ -1,6 +1,7 @@
 import sqlite3
 import re
 import base64
+import sys
 
 wordsConnection = sqlite3.connect('words.db')
 
@@ -249,12 +250,48 @@ def wordCheck(possibleWord):
             return True
     return False
 
-# print every decrypted solution
+#Checks if a possible solution contains enough valid words to be the correct solution
+def solutionCheck(possibleSolution):
+    wordsChecked = 0
+    wordsConfirmed = 0
+    consecutiveInvalidWords = 0
+    possibleWord = ""
+    # Checks solutions with spaces
+    if re.search('[\s]', possibleSolution):
+        for i in range(len(possibleSolution)):
+            if consecutiveInvalidWords == 3:
+                return False
+            if re.search('[\'a-zA-Z]', possibleSolution[i]):
+                possibleWord += possibleSolution[i]
+            if (re.search('[^\'a-zA-Z]', possibleSolution[i]) or i is len(possibleSolution) - 1) and possibleWord is not "":
+                if wordCheck(possibleWord):
+                    wordsConfirmed += 1
+                    consecutiveInvalidWords = 0
+                else:
+                    consecutiveInvalidWords += 1
+                wordsChecked += 1
+                possibleWord = ""
+        if wordsConfirmed >= 1 and (wordsConfirmed / wordsChecked) >= 0.60:
+            return True
+    # Will check solutions without spaces
+    else:
+        #todo loops to check unbroken sring for words
+        print()
+        return True
+    return False
+
+# Prints most likely decrypted solution(s)
 def display():
-    for entry in range(len(solutions)):
-        print (solutions[entry][0] + " - " + solutions[entry][1])
     print ("\n")
-    solutions.clear()
+    for entry in range(len(solutions)):
+        if solutions[entry][0] == "":
+            continue
+        if re.search('[^\\\.\!\@\#\$\%\&\(\)\-\"\'\:\;\?\,\s\n\w]', solutions[entry][0]):
+            continue
+        if solutionCheck(solutions[entry][0]):
+            print (solutions[entry][0] + " - " + solutions[entry][1])
+    print ("\n")
+    main()
 
 # Accepts encrypted message, determines possible encryption types, and runs it through applicable decrypters
 def main():
@@ -279,7 +316,5 @@ def main():
         ascii85Conversions(message)
     
     display()
-
-    main()
 
 main()
