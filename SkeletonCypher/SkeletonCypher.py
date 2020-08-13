@@ -5,6 +5,9 @@ import sys
 
 wordsConnection = sqlite3.connect('words.db')
 
+cur = wordsConnection.cursor()
+cur.execute('CREATE TABLE IF NOT EXISTS WORDS (WORD TEXT, FIRSTLETTER TEXT)') 
+
 solutions = []
 
 alph = "abcdefghijklmnopqrstuvwxyz"
@@ -238,7 +241,7 @@ def ascii85Conversions(message):
     solutions.append((decryptedAscii, "Ascii85 to Ascii"))
     solutions.append((decryptedDecimal, "Ascii85 to Decimal"))
 
-#Checks if the given string is a valid word
+# Checks if the given string is a valid word
 def wordCheck(possibleWord):
     inputWord = possibleWord.lower()
     cur = wordsConnection.cursor()
@@ -250,14 +253,17 @@ def wordCheck(possibleWord):
             return True
     return False
 
-#Checks if a possible solution contains enough valid words to be the correct solution
+# Checks if a possible solution contains enough valid words to be the correct solution
 def solutionCheck(possibleSolution):
     wordsChecked = 0
     wordsConfirmed = 0
     consecutiveInvalidWords = 0
     possibleWord = ""
-    # Checks solutions with spaces
-    if re.search('[\s]', possibleSolution):
+
+    # Checks solutions with separated words
+    if re.search('[^a-zA-Z]', possibleSolution):
+        if not re.search('[a-zA-Z]', possibleSolution):
+            return False
         for i in range(len(possibleSolution)):
             if consecutiveInvalidWords == 3:
                 return False
@@ -273,11 +279,15 @@ def solutionCheck(possibleSolution):
                 possibleWord = ""
         if wordsConfirmed >= 1 and (wordsConfirmed / wordsChecked) >= 0.60:
             return True
-    # Will check solutions without spaces
+
+    # Will check unbroken strings of letters
     else:
-        #todo loops to check unbroken sring for words
-        print()
-        return True
+        #to do loops to check unbroken sring for words
+        if re.search('[a-zA-Z]', possibleSolution):
+            print ("no space")
+            return True
+        else:
+            return False
     return False
 
 # Prints most likely decrypted solution(s)
