@@ -9,24 +9,30 @@ commonWordsConnection = sqlite3.connect('commonWords.db')
 solutions = []
 
 alph = "abcdefghijklmnopqrstuvwxyz"
+alphUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # Runs every letter in input through all 25 possible rotation cyphers
 def rot(message):
-    encrypted = message.lower()
     decrypted = ""
+    adjustment = 0
     for key in range(1, 26):
-        for char in encrypted:
+        for char in message:
             if not char.isalpha():
                 decrypted += char
                 continue
             for i in range(len(alph)):
-                if char == alph[i]:
+                if char.lower() == alph[i]:
                     if i + key >= len(alph):
-                        decrypted += alph[i + (key - 26)]
+                        adjustment = (i + (key - 26))
+                    else:
+                        adjustment = (i + key)
+                    if char.isupper():
+                        decrypted += alphUpper[adjustment]
                         break
                     else:
-                        decrypted += alph[i + key]
+                        decrypted += alph[adjustment]
                         break
+
 
         solutions.append((decrypted, "rot" + str(key)))
         decrypted = ""
