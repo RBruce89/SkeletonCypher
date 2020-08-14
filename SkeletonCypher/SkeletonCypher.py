@@ -4,9 +4,7 @@ import base64
 import sys
 
 wordsConnection = sqlite3.connect('words.db')
-
-cur = wordsConnection.cursor()
-cur.execute('CREATE TABLE IF NOT EXISTS WORDS (WORD TEXT, FIRSTLETTER TEXT)') 
+commonWordsConnection = sqlite3.connect('commonWords.db')
 
 solutions = []
 
@@ -244,9 +242,9 @@ def ascii85Conversions(message):
 # Checks if the given string is a valid word
 def wordCheck(possibleWord):
     inputWord = possibleWord.lower()
-    cur = wordsConnection.cursor()
-    cur.execute("SELECT * FROM WORDS WHERE FIRSTLETTER=?", (inputWord[:1]))
-    words = cur.fetchall()
+    wordCur = wordsConnection.cursor()
+    wordCur.execute("SELECT * FROM WORDS WHERE FIRSTLETTER=?", (inputWord[:1]))
+    words = wordCur.fetchall()
 
     for word in words:
         if word[0] == inputWord:
@@ -280,19 +278,23 @@ def solutionCheck(possibleSolution):
         if wordsConfirmed >= 1 and (wordsConfirmed / wordsChecked) >= 0.60:
             return True
 
-    # Will check unbroken strings of letters
+    # Checks solutions that are unbroken strings of letters
     else:
-        #to do loops to check unbroken sring for words
-        if re.search('[a-zA-Z]', possibleSolution):
-            print ("no space")
+        comWordCur = commonWordsConnection.cursor()
+        comWordCur.execute("SELECT * FROM WORDS")
+        words = comWordCur.fetchall()
+        for word in words:
+            if word[0] in possibleSolution:
+                wordsConfirmed += 1
+        if (wordsConfirmed / len(possibleSolution)) >= 0.2:
             return True
-        else:
-            return False
+
     return False
 
 # Prints most likely decrypted solution(s)
 def display():
     print ("\n")
+    solutionFound = False
     for entry in range(len(solutions)):
         if solutions[entry][0] == "":
             continue
@@ -300,6 +302,9 @@ def display():
             continue
         if solutionCheck(solutions[entry][0]):
             print (solutions[entry][0] + " - " + solutions[entry][1])
+            solutionFound = True
+    if solutionFound == False:
+        print("No probable solutions found. You can still press \"A\" for a full list of the rejected solutions.")
     print ("\n")
     optionsTree()
 
@@ -310,7 +315,10 @@ def optionsTree():
     print ("To exit press: E")
     choice = input(": ")
     if choice.upper() == "A":
+        print ("\n")
         for entry in range(len(solutions)):
+            if solutions[entry][0] == "":
+                continue
             print (solutions[entry][0] + " - " + solutions[entry][1])
         print ("\n")
         optionsTree()

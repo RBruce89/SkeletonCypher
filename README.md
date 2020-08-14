@@ -1,6 +1,6 @@
 # Introduction
 
-Skeleton Cypher was inspired by ARGs, which often use simple but varied methods of encryption to obscure plain text. Skeleton Cypher will examine the input to determine what types of encryption could have been used, run It through all applicable decryption methods, and (eventually) examine the results to display only the most likely one or few. Just enter the encrypted text, and Skeleton Cypher takes care of the rest.
+Skeleton Cypher was inspired by ARGs, which often use simple but varied methods of encryption to obscure plain text. Skeleton Cypher will examine the input to determine what types of encryption could have been used, run It through all applicable decryption methods, and examine the results to display only the most likely one or few using word databases based on lists from SCOWL And Friends (http://wordlist.aspell.net/). Just enter the encrypted text, and Skeleton Cypher takes care of the rest.
 
 ## Features
 
