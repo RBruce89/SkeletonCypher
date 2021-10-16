@@ -10,6 +10,8 @@ solutions = []
 
 alph = "abcdefghijklmnopqrstuvwxyz"
 alphUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+qwerty = "qwertyuiopasdfghjklzxcvbnm"
+qwertyUpper = "QWERTYUIOPASDFGHJKLZXCVBNM"
 
 # Runs every letter in input through all 25 possible rotation cyphers
 def rot(message):
@@ -35,6 +37,32 @@ def rot(message):
 
 
         solutions.append((decrypted, "rot" + str(key)))
+        decrypted = ""
+
+# Runs every letter in input through all 25 possible qwerty shift ciphers
+def qwertyShift(message):
+    decrypted = ""
+    adjustment = 0
+    for key in range(1, 26):
+        for char in message:
+            if not char.isalpha():
+                decrypted += char
+                continue
+            for i in range(len(qwerty)):
+                if char.lower() == qwerty[i]:
+                    if i + key >= len(qwerty):
+                        adjustment = (i + (key - 26))
+                    else:
+                        adjustment = (i + key)
+                    if char.isupper():
+                        decrypted += qwertyUpper[adjustment]
+                        break
+                    else:
+                        decrypted += qwerty[adjustment]
+                        break
+
+
+        solutions.append((decrypted, "qwerty shift " + str(key)))
         decrypted = ""
 
 # Deciphers Morse code
@@ -340,6 +368,7 @@ def main():
     message = input("Enter encrypted text: ")
     if re.search('[a-zA-Z]', message):
         rot(message)
+        qwertyShift(message)
     if re.search('[.-]', message):
         morse(message)
     if re.search('[0-9]', message):

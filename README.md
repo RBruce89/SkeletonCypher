@@ -5,7 +5,8 @@ Skeleton Cypher was inspired by ARGs, which often use simple but varied methods 
 ## Features
 
 #### Skeleton Cypher currently supports decryption of:
-* Rotation Ciphers
+* Rotation ciphers
+* Qwerty shift ciphers
 * Morse code
 * Binary
 * Octal
