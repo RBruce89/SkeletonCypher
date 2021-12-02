@@ -65,6 +65,23 @@ def qwertyShift(message):
         solutions.append((decrypted, "qwerty shift " + str(key)))
         decrypted = ""
 
+#Deciphers Atbash
+def atbash(message):
+    decrypted = ""
+    for char in message:
+        if not char.isalpha():
+            decrypted += char
+            continue
+        for i in range(len(alph)):
+            if char.lower() == alph[i]:
+                if char.isupper():
+                    decrypted += chr(90 - i)
+                else:
+                    decrypted += chr(122 - i)
+                break
+
+    solutions.append((decrypted, "Atbash"))
+
 # Deciphers Morse code
 def morse(message):
     encrypted = re.sub("_", "-", message)
@@ -369,6 +386,7 @@ def main():
     if re.search('[a-zA-Z]', message):
         rot(message)
         qwertyShift(message)
+        atbash(message)
     if re.search('[.-]', message):
         morse(message)
     if re.search('[0-9]', message):
