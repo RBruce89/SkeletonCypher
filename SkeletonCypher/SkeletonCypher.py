@@ -65,7 +65,34 @@ def qwertyShift(message):
         solutions.append((decrypted, "qwerty shift " + str(key)))
         decrypted = ""
 
-#Deciphers Atbash
+# Switches message from alphabetical to qwerty order and vice versa
+def alphQwertySwitcher(message):
+    decryptedQwerty = ""
+    decryptedAlph = ""
+    for char in message:
+        if not char.isalpha():
+            decryptedQwerty += char
+            decryptedAlph += char
+            continue
+        for i in range(len(alph)):
+            if char.lower() == alph[i]:
+                if char.isupper():
+                    decryptedQwerty += qwertyUpper[i]
+                else:
+                    decryptedQwerty += qwerty[i]
+                break
+        for i in range(len(qwerty)):
+            if char.lower() == qwerty[i]:
+                if char.isupper():
+                    decryptedAlph += alphUpper[i]
+                else:
+                    decryptedAlph += alph[i]
+                break
+
+    solutions.append((decryptedQwerty, "Alphabet to Qwerty"))
+    solutions.append((decryptedAlph, "Qwerty to Alphabet"))
+
+# Deciphers Atbash
 def atbash(message):
     decrypted = ""
     for char in message:
@@ -318,7 +345,7 @@ def solutionCheck(possibleSolution):
                 return False
             if re.search('[\'a-zA-Z]', possibleSolution[i]):
                 possibleWord += possibleSolution[i]
-            if (re.search('[^\'a-zA-Z]', possibleSolution[i]) or i is len(possibleSolution) - 1) and possibleWord is not "":
+            if (re.search('[^\'a-zA-Z]', possibleSolution[i]) or i is len(possibleSolution) - 1) and possibleWord != "":
                 if wordCheck(possibleWord):
                     wordsConfirmed += 1
                     consecutiveInvalidWords = 0
@@ -386,6 +413,7 @@ def main():
     if re.search('[a-zA-Z]', message):
         rot(message)
         qwertyShift(message)
+        alphQwertySwitcher(message)
         atbash(message)
     if re.search('[.-]', message):
         morse(message)

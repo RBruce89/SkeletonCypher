@@ -7,6 +7,8 @@ Skeleton Cypher was inspired by ARGs, which often use simple but varied methods 
 #### Skeleton Cypher currently supports decryption of:
 * Rotation ciphers
 * Qwerty shift ciphers
+* Alphabet to Qwerty
+* Qwerty to Alphabet
 * Atbash
 * Morse code
 * Binary
