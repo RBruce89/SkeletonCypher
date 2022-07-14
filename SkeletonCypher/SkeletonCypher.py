@@ -109,6 +109,131 @@ def atbash(message):
 
     solutions.append((decrypted, "Atbash"))
 
+# Deciphers Rail Fence ciphers
+def railFence(message):
+    # Solve Rail Fence with a key of 2
+    decrypted = ""
+    decryptedList = list(message)
+    position = 0
+    compensator = 0
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        compensator += 2
+        position += 1
+    compensator = 1
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        compensator += 2
+        position += 1
+    decrypted = "".join(decryptedList)
+    solutions.append((decrypted, "Rail Fence (2)"))
+
+    # Solve Rail Fence with a key of 3
+    decrypted = ""
+    decryptedList = list(message)
+    position = 0
+    compensator = 0
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        compensator += 4
+        position += 1
+    compensator = 1
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        compensator += 2
+        position += 1
+    compensator = 2
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        compensator += 4
+        position += 1
+    decrypted = "".join(decryptedList)
+    solutions.append((decrypted, "Rail Fence (3)"))
+
+    # Solve Rail Fence with a key of 4
+    decrypted = ""
+    decryptedList = list(message)
+    position = 0
+    compensator = 0
+    down = True
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        compensator += 6
+        position += 1
+    compensator = 1
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        if down == True:
+            compensator += 4
+            down = False
+        else:
+            compensator += 2
+            down = True
+        position += 1
+    compensator = 2
+    down = True
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        if down == True:
+            compensator += 2
+            down = False
+        else:
+            compensator += 4
+            down = True
+        position += 1
+    compensator = 3
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        compensator += 6
+        position += 1
+    decrypted = "".join(decryptedList)
+    solutions.append((decrypted, "Rail Fence (4)"))
+
+    # Solve Rail Fence with a key of 5
+    decrypted = ""
+    decryptedList = list(message)
+    position = 0
+    compensator = 0
+    down = True
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        compensator += 8
+        position += 1
+    compensator = 1
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        if down == True:
+            compensator += 6
+            down = False
+        else:
+            compensator += 2
+            down = True
+        position += 1
+    compensator = 2
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        compensator += 4
+        position += 1
+    compensator = 3
+    down = True
+    while compensator < len(message):
+        decryptedList[compensator] = message[position]
+        if down == True:
+            compensator += 2
+            down = False
+        else:
+            compensator += 6
+            down = True
+        position += 1
+    compensator = 4
+    while compensator < len(message):
+        #both args on the next line are fucked
+        decryptedList[compensator] = message[position]
+        compensator += 8
+        position += 1
+    decrypted = "".join(decryptedList)
+    solutions.append((decrypted, "Rail Fence (5)"))
+
 # Deciphers Morse code
 def morse(message):
     encrypted = re.sub("_", "-", message)
@@ -415,6 +540,7 @@ def main():
         qwertyShift(message)
         alphQwertySwitcher(message)
         atbash(message)
+        railFence(message)
     if re.search('[.-]', message):
         morse(message)
     if re.search('[0-9]', message):
