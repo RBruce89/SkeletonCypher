@@ -17,6 +17,7 @@ Just enter the encrypted text, and Skeleton Cypher takes care of the rest.
 * Octal
 * Decimal
 * Hexadecimal
+* T9
 * Base 32
 * Base 64
 * Ascii 85

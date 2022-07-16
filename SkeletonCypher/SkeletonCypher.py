@@ -227,7 +227,6 @@ def railFence(message):
         position += 1
     compensator = 4
     while compensator < len(message):
-        #both args on the next line are fucked
         decryptedList[compensator] = message[position]
         compensator += 8
         position += 1
@@ -319,6 +318,38 @@ def decimal(message):
 
     solutions.append((decryptedAscii, "Decimal to Ascii"))
     solutions.append((decryptedAlph, "Decimal to Alphabet"))
+
+# Converts numbers to their corresponding letters on a T9 number pad
+def t9(message):
+    decrypted = ""
+    alphabetPosition = 0
+    i = 0
+    while i < len(message):
+        if not re.search('[2-9]', message[i]):
+            i += 1
+            continue
+        if message[i] == "2":
+            alphabetPosition = 0
+        if message[i] == "3":
+            alphabetPosition = 3
+        if message[i] == "4":
+            alphabetPosition = 6
+        if message[i] == "5":
+            alphabetPosition = 9
+        if message[i] == "6":
+            alphabetPosition = 12
+        if message[i] == "7":
+            alphabetPosition = 15
+        if message[i] == "8":
+            alphabetPosition = 19
+        if message[i] == "9":
+            alphabetPosition = 22
+        while i + 1 < len(message) and message[i + 1] == message[i]:
+            alphabetPosition += 1
+            i += 1
+        decrypted += alph[alphabetPosition]
+        i +=  1
+    solutions.append((decrypted, "T9"))
 
 # Converts binary input to its translation in Ascii, decimal, and letter
 def binary(message):
@@ -545,6 +576,8 @@ def main():
         morse(message)
     if re.search('[0-9]', message):
         decimal(message)
+    if re.search('[2-9]', message):
+        t9(message)
     if not re.search('[2-9a-zA-Z]', message):
         binary(message)
     if not re.search('[8-9a-zA-z]', message):
