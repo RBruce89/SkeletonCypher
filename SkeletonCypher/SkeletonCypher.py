@@ -294,6 +294,55 @@ def morse(message):
 
     solutions.append((decrypted, "Morse code"))
 
+# Deciphers Baconian ciphers
+def bacon(message):
+    encrypted = ""
+    decrypted = ""
+    firstChar = ""
+    secondChar = ""
+    spaceChar =""
+
+    for i in range(1, len(message)):
+        if firstChar == "":
+            firstChar = message[i - 1]
+        if secondChar == "" and message[i - 1] != firstChar and i%6 != 0:
+            secondChar = message[i - 1]
+        if spaceChar == "" and message[i - 1] != firstChar and message[i - 1] != secondChar:
+            spaceChar = message[i - 1]
+        if message[i - 1] != firstChar and message[i - 1] != secondChar and message[i - 1] != spaceChar:
+            return
+
+    encrypted = re.sub(spaceChar, "", message)
+    if secondChar != "0":
+        encrypted = re.sub(firstChar, "0", encrypted)
+        encrypted = re.sub(secondChar, "1", encrypted)
+    if secondChar == "0" and firstChar != "1" :
+        encrypted = re.sub(secondChar, "1", encrypted)
+        encrypted = re.sub(firstChar, "0", encrypted)
+
+    for i in range(4):
+        for j in range(0, len(encrypted), 5):
+            tempOctet = encrypted[j:j + 5]
+            tempOctet = int(tempOctet, 2)
+            if i >= 2:
+                if tempOctet > 8:
+                    tempOctet += 1
+                if tempOctet > 20:
+                    tempOctet += 1
+            if tempOctet > 25:
+                continue
+            decrypted += alph[tempOctet]
+
+        if i < 2:
+            solutions.append((decrypted, "Bacon (26 Character)"))
+            decrypted = ""
+        else:
+            solutions.append((decrypted, "Bacon (24 Character)"))
+            decrypted = ""
+        encrypted = re.sub("1", "2", encrypted)
+        encrypted = re.sub("0", "1", encrypted)
+        encrypted = re.sub("2", "0", encrypted)
+
 # Converts decimal input to its Ascii and letter translations 
 def decimal(message):
     encrypted = message
@@ -566,6 +615,7 @@ def optionsTree():
 # Accepts encrypted message, determines possible encryption types, and runs it through applicable decrypters
 def main():
     message = input("Enter encrypted text: ")
+    bacon(message)
     if re.search('[a-zA-Z]', message):
         rot(message)
         qwertyShift(message)
