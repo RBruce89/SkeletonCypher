@@ -294,6 +294,56 @@ def morse(message):
 
     solutions.append((decrypted, "Morse code"))
 
+# Deciphers Tap code
+def tap(message):
+    letters = [['a', 'b', 'c', 'd', 'e'], ['f', 'g', 'h', 'i', 'j'],
+               ['l', 'm', 'n', 'o', 'p'], ['q', 'r', 's', 't', 'u'],
+               ['v', 'w', 'x', 'y', 'z']]
+    encrypted = ""
+    decrypted = ""
+
+    encrypted = re.sub('[^1-5/]', "", message)
+    encrypted = re.sub('/', '//', encrypted)
+    for i in range(0, len(encrypted), 2):
+        if encrypted[i] == '/' or encrypted[i + 1] == '/':
+            decrypted += " "
+            continue
+        if i + 1 < len(encrypted):
+            row = int(encrypted[i]) - 1
+            column = int(encrypted[i + 1]) -1
+            decrypted += letters[row][column]
+
+    solutions.append((decrypted, "Tap code"))
+
+    encrypted = message
+    decrypted = ""
+    row = 0
+    column= 0
+
+    i = 0
+    while i < len(encrypted):
+        if encrypted[i] == '/':
+            decrypted += " "
+            i += 1
+            continue
+        if encrypted[i] == '.':
+            if row == 0:
+                row += 1
+                while i + 1 < len(encrypted) and encrypted[i + 1] == '.' and row < 5:
+                    row += 1
+                    i += 1
+            else:
+                column += 1
+                while i + 1 < len(encrypted) and encrypted[i + 1] == '.' and column < 5:
+                    column += 1
+                    i += 1
+                decrypted += letters[row - 1][column - 1]
+                row = 0
+                column = 0
+        i += 1
+
+    solutions.append((decrypted, "Tap code"))
+
 # Deciphers Baconian ciphers
 def bacon(message):
     encrypted = ""
@@ -311,6 +361,8 @@ def bacon(message):
             spaceChar = message[i - 1]
         if message[i - 1] != firstChar and message[i - 1] != secondChar and message[i - 1] != spaceChar:
             return
+    if secondChar == "":
+        return
 
     encrypted = re.sub(spaceChar, "", message)
     if secondChar != "0":
@@ -624,6 +676,8 @@ def main():
         railFence(message)
     if re.search('[.-]', message):
         morse(message)
+    if re.search('[1-5.]', message):
+        tap(message)
     if re.search('[0-9]', message):
         decimal(message)
     if re.search('[2-9]', message):

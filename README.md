@@ -14,6 +14,7 @@ Just enter the encrypted text, and Skeleton Cypher takes care of the rest.
 * Bacon
 * Rail fence
 * Morse code
+* Tap code
 * Binary
 * Octal
 * Decimal
