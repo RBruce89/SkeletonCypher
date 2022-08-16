@@ -9,11 +9,9 @@ commonWordsConnection = sqlite3.connect('commonWords.db')
 solutions = []
 
 alph = "abcdefghijklmnopqrstuvwxyz"
-alphUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 qwerty = "qwertyuiopasdfghjklzxcvbnm"
-qwertyUpper = "QWERTYUIOPASDFGHJKLZXCVBNM"
 
-# Runs every letter in input through all 25 possible rotation cyphers
+# Runs input through all 25 possible Rotation cyphers
 def rot(message):
     decrypted = ""
     adjustment = 0
@@ -29,17 +27,16 @@ def rot(message):
                     else:
                         adjustment = (i + key)
                     if char.isupper():
-                        decrypted += alphUpper[adjustment]
+                        decrypted += alph[adjustment].upper()
                         break
                     else:
                         decrypted += alph[adjustment]
                         break
 
-
         solutions.append((decrypted, "rot" + str(key)))
         decrypted = ""
 
-# Runs every letter in input through all 25 possible qwerty shift ciphers
+# Runs input through all 25 possible Qwerty shift ciphers
 def qwertyShift(message):
     decrypted = ""
     adjustment = 0
@@ -55,12 +52,11 @@ def qwertyShift(message):
                     else:
                         adjustment = (i + key)
                     if char.isupper():
-                        decrypted += qwertyUpper[adjustment]
+                        decrypted += qwerty[adjustment].upper()
                         break
                     else:
                         decrypted += qwerty[adjustment]
                         break
-
 
         solutions.append((decrypted, "qwerty shift " + str(key)))
         decrypted = ""
@@ -77,14 +73,14 @@ def alphQwertySwitcher(message):
         for i in range(len(alph)):
             if char.lower() == alph[i]:
                 if char.isupper():
-                    decryptedQwerty += qwertyUpper[i]
+                    decryptedQwerty += qwerty[i].upper()
                 else:
                     decryptedQwerty += qwerty[i]
                 break
         for i in range(len(qwerty)):
             if char.lower() == qwerty[i]:
                 if char.isupper():
-                    decryptedAlph += alphUpper[i]
+                    decryptedAlph += alph[i].upper()
                 else:
                     decryptedAlph += alph[i]
                 break
@@ -92,7 +88,7 @@ def alphQwertySwitcher(message):
     solutions.append((decryptedQwerty, "Alphabet to Qwerty"))
     solutions.append((decryptedAlph, "Qwerty to Alphabet"))
 
-# Deciphers Atbash
+# Deciphers Atbash cipher
 def atbash(message):
     decrypted = ""
     for char in message:
@@ -126,6 +122,7 @@ def railFence(message):
         compensator += 2
         position += 1
     decrypted = "".join(decryptedList)
+
     solutions.append((decrypted, "Rail Fence (2)"))
 
     # Solve Rail Fence with a key of 3
@@ -148,6 +145,7 @@ def railFence(message):
         compensator += 4
         position += 1
     decrypted = "".join(decryptedList)
+
     solutions.append((decrypted, "Rail Fence (3)"))
 
     # Solve Rail Fence with a key of 4
@@ -187,6 +185,7 @@ def railFence(message):
         compensator += 6
         position += 1
     decrypted = "".join(decryptedList)
+
     solutions.append((decrypted, "Rail Fence (4)"))
 
     # Solve Rail Fence with a key of 5
@@ -231,6 +230,7 @@ def railFence(message):
         compensator += 8
         position += 1
     decrypted = "".join(decryptedList)
+
     solutions.append((decrypted, "Rail Fence (5)"))
 
 # Deciphers Morse code
@@ -286,9 +286,7 @@ def morse(message):
                 "..--..": "?",
                 }
                 decrypted += morseSwitcher.get(tempChar, " ")
-
                 tempChar = ""
-
             if encrypted[i] == "/":
                 decrypted += " "
 
@@ -299,27 +297,26 @@ def tap(message):
     letters = [['a', 'b', 'c', 'd', 'e'], ['f', 'g', 'h', 'i', 'j'],
                ['l', 'm', 'n', 'o', 'p'], ['q', 'r', 's', 't', 'u'],
                ['v', 'w', 'x', 'y', 'z']]
-    encrypted = ""
-    decrypted = ""
-
+    # Solves Tap code denoted by numerals
     encrypted = re.sub('[^1-5/]', "", message)
     encrypted = re.sub('/', '//', encrypted)
+    decrypted = ""
     for i in range(0, len(encrypted), 2):
-        if encrypted[i] == '/' or encrypted[i + 1] == '/':
+        if encrypted[i] == '/' or len(encrypted) > i + 1 and encrypted[i + 1] == '/':
             decrypted += " "
             continue
         if i + 1 < len(encrypted):
             row = int(encrypted[i]) - 1
-            column = int(encrypted[i + 1]) -1
+            column = int(encrypted[i + 1]) - 1
             decrypted += letters[row][column]
 
     solutions.append((decrypted, "Tap code"))
 
+    # Solves Tap code denoted by .'s
     encrypted = message
     decrypted = ""
     row = 0
     column= 0
-
     i = 0
     while i < len(encrypted):
         if encrypted[i] == '/':
@@ -350,9 +347,9 @@ def bacon(message):
     decrypted = ""
     firstChar = ""
     secondChar = ""
-    spaceChar =""
-
-    for i in range(1, len(message)):
+    spaceChar = ""
+    # Checks if input matches Bacon cipher format
+    for i in range(1, len(message) + 1):
         if firstChar == "":
             firstChar = message[i - 1]
         if secondChar == "" and message[i - 1] != firstChar and i%6 != 0:
@@ -363,15 +360,15 @@ def bacon(message):
             return
     if secondChar == "":
         return
-
+    # Standardised input
     encrypted = re.sub(spaceChar, "", message)
     if secondChar != "0":
         encrypted = re.sub(firstChar, "0", encrypted)
         encrypted = re.sub(secondChar, "1", encrypted)
-    if secondChar == "0" and firstChar != "1" :
+    if secondChar == "0" and firstChar != "1":
         encrypted = re.sub(secondChar, "1", encrypted)
         encrypted = re.sub(firstChar, "0", encrypted)
-
+    # Solves all four possible configurations of cipher
     for i in range(4):
         for j in range(0, len(encrypted), 5):
             tempOctet = encrypted[j:j + 5]
@@ -384,7 +381,6 @@ def bacon(message):
             if tempOctet > 25:
                 continue
             decrypted += alph[tempOctet]
-
         if i < 2:
             solutions.append((decrypted, "Bacon (26 Character)"))
             decrypted = ""
@@ -395,7 +391,7 @@ def bacon(message):
         encrypted = re.sub("0", "1", encrypted)
         encrypted = re.sub("2", "0", encrypted)
 
-# Converts decimal input to its Ascii and letter translations 
+# Converts decimal input to its Ascii and letter translations
 def decimal(message):
     encrypted = message
     decryptedAscii = ""
@@ -414,7 +410,6 @@ def decimal(message):
                 while tempNum > 26:
                     tempNum = tempNum - 26
                 decryptedAlph += alph[tempNum - 1]
-
                 tempNum = ""
 
     solutions.append((decryptedAscii, "Decimal to Ascii"))
@@ -449,7 +444,8 @@ def t9(message):
             alphabetPosition += 1
             i += 1
         decrypted += alph[alphabetPosition]
-        i +=  1
+        i += 1
+
     solutions.append((decrypted, "T9"))
 
 # Converts binary input to its translation in Ascii, decimal, and letter
@@ -476,7 +472,7 @@ def binary(message):
     solutions.append((decryptedDecimal, "Binary to Decimal"))
     solutions.append((decryptedAlph, "Binary to Alphabet"))
 
-# Converts octal input to its translations in Ascii, decimal, and letter 
+# Converts octal input to its translations in Ascii, decimal, and letter
 def octal(message):
     encrypted = message
     decryptedAscii = ""
@@ -512,7 +508,7 @@ def hexadecimal(message):
     decryptedAscii = ""
     decryptedDecimal = ""
     decryptedAlph = ""
-    while len(encrypted) % 2 != 0:
+    while len(encrypted)%2 != 0:
         encrypted += "0"
     for i in range(0, len(encrypted), 2):
         tempOctet = encrypted[i:i + 2]
@@ -580,7 +576,6 @@ def wordCheck(possibleWord):
     wordCur = wordsConnection.cursor()
     wordCur.execute("SELECT * FROM WORDS WHERE FIRSTLETTER=?", (inputWord[:1]))
     words = wordCur.fetchall()
-
     for word in words:
         if word[0] == inputWord:
             return True
@@ -588,12 +583,11 @@ def wordCheck(possibleWord):
 
 # Checks if a possible solution contains enough valid words to be the correct solution
 def solutionCheck(possibleSolution):
+    # Checks solutions with separated words
     wordsChecked = 0
     wordsConfirmed = 0
     consecutiveInvalidWords = 0
     possibleWord = ""
-
-    # Checks solutions with separated words
     if re.search('[^a-zA-Z]', possibleSolution):
         if not re.search('[a-zA-Z]', possibleSolution):
             return False
@@ -639,7 +633,7 @@ def display():
             print (solutions[entry][0] + " - " + solutions[entry][1])
             solutionFound = True
     if solutionFound == False:
-        print("No probable solutions found. You can still press \"A\" for a full list of the rejected solutions.")
+        print("No probable solution found. You can still press \"A\" for the full list of rejected solutions.")
     print ("\n")
     optionsTree()
 
@@ -663,6 +657,7 @@ def optionsTree():
         main()
     if choice.upper() == "E":
         sys.exit(0)
+    return
 
 # Accepts encrypted message, determines possible encryption types, and runs it through applicable decrypters
 def main():
