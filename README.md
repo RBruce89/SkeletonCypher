@@ -11,7 +11,7 @@ Just enter the encrypted text, and Skeleton Cypher takes care of the rest.
 * Alphabet to Qwerty
 * Qwerty to Alphabet
 * Atbash
-* Bacon
+* Bacon cipher
 * Rail fence
 * Morse code
 * Tap code
@@ -19,7 +19,7 @@ Just enter the encrypted text, and Skeleton Cypher takes care of the rest.
 * Octal
 * Decimal
 * Hexadecimal
-* T9
+* Multi-Tap code
 * Base 32
 * Base 64
 * Ascii 85

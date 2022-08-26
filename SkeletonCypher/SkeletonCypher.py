@@ -33,7 +33,8 @@ def rot(message):
                         decrypted += alph[adjustment]
                         break
 
-        solutions.append((decrypted, "rot" + str(key)))
+        originalKey = 26 - key
+        solutions.append((decrypted, "Rotation Cipher (key +" + str(originalKey) + ")"))
         decrypted = ""
 
 # Runs input through all 25 possible Qwerty shift ciphers
@@ -58,7 +59,8 @@ def qwertyShift(message):
                         decrypted += qwerty[adjustment]
                         break
 
-        solutions.append((decrypted, "qwerty shift " + str(key)))
+        originalKey = 26 - key
+        solutions.append((decrypted, "Qwerty Shift (key +" + str(originalKey) + ")"))
         decrypted = ""
 
 # Switches message from alphabetical to qwerty order and vice versa
@@ -85,8 +87,8 @@ def alphQwertySwitcher(message):
                     decryptedAlph += alph[i]
                 break
 
-    solutions.append((decryptedQwerty, "Alphabet to Qwerty"))
-    solutions.append((decryptedAlph, "Qwerty to Alphabet"))
+    solutions.append((decryptedQwerty, "Qwerty to Alphabet"))
+    solutions.append((decryptedAlph, "Alphabet to Qwerty"))
 
 # Deciphers Atbash cipher
 def atbash(message):
@@ -123,7 +125,7 @@ def railFence(message):
         position += 1
     decrypted = "".join(decryptedList)
 
-    solutions.append((decrypted, "Rail Fence (2)"))
+    solutions.append((decrypted, "Rail Fence (key 2)"))
 
     # Solve Rail Fence with a key of 3
     decrypted = ""
@@ -146,7 +148,7 @@ def railFence(message):
         position += 1
     decrypted = "".join(decryptedList)
 
-    solutions.append((decrypted, "Rail Fence (3)"))
+    solutions.append((decrypted, "Rail Fence (key 3)"))
 
     # Solve Rail Fence with a key of 4
     decrypted = ""
@@ -186,7 +188,7 @@ def railFence(message):
         position += 1
     decrypted = "".join(decryptedList)
 
-    solutions.append((decrypted, "Rail Fence (4)"))
+    solutions.append((decrypted, "Rail Fence (key 4)"))
 
     # Solve Rail Fence with a key of 5
     decrypted = ""
@@ -231,7 +233,7 @@ def railFence(message):
         position += 1
     decrypted = "".join(decryptedList)
 
-    solutions.append((decrypted, "Rail Fence (5)"))
+    solutions.append((decrypted, "Rail Fence (key 5)"))
 
 # Deciphers Morse code
 def morse(message):
@@ -290,7 +292,7 @@ def morse(message):
             if encrypted[i] == "/":
                 decrypted += " "
 
-    solutions.append((decrypted, "Morse code"))
+    solutions.append((decrypted, "Morse Code"))
 
 # Deciphers Tap code
 def tap(message):
@@ -310,7 +312,7 @@ def tap(message):
             column = int(encrypted[i + 1]) - 1
             decrypted += letters[row][column]
 
-    solutions.append((decrypted, "Tap code"))
+    solutions.append((decrypted, "Tap Code"))
 
     # Solves Tap code denoted by .'s
     encrypted = message
@@ -339,7 +341,7 @@ def tap(message):
                 column = 0
         i += 1
 
-    solutions.append((decrypted, "Tap code"))
+    solutions.append((decrypted, "Tap Code"))
 
 # Deciphers Baconian ciphers
 def bacon(message):
@@ -382,10 +384,10 @@ def bacon(message):
                 continue
             decrypted += alph[tempOctet]
         if i < 2:
-            solutions.append((decrypted, "Bacon (26 Character)"))
+            solutions.append((decrypted, "Bacon Cipher (26 Character)"))
             decrypted = ""
         else:
-            solutions.append((decrypted, "Bacon (24 Character)"))
+            solutions.append((decrypted, "Bacon Cipher (24 Character)"))
             decrypted = ""
         encrypted = re.sub("1", "2", encrypted)
         encrypted = re.sub("0", "1", encrypted)
@@ -412,11 +414,11 @@ def decimal(message):
                 decryptedAlph += alph[tempNum - 1]
                 tempNum = ""
 
-    solutions.append((decryptedAscii, "Decimal to Ascii"))
-    solutions.append((decryptedAlph, "Decimal to Alphabet"))
+    solutions.append((decryptedAscii, "Ascii to Decimal"))
+    solutions.append((decryptedAlph, "Alphabet to Decimal"))
 
 # Converts numbers to their corresponding letters on a T9 number pad
-def t9(message):
+def multiTap(message):
     decrypted = ""
     alphabetPosition = 0
     i = 0
@@ -446,7 +448,7 @@ def t9(message):
         decrypted += alph[alphabetPosition]
         i += 1
 
-    solutions.append((decrypted, "T9"))
+    solutions.append((decrypted, "Multi-Tap Code"))
 
 # Converts binary input to its translation in Ascii, decimal, and letter
 def binary(message):
@@ -468,9 +470,9 @@ def binary(message):
             tempOctet = tempOctet - 26
         decryptedAlph += alph[tempOctet - 1]
 
-    solutions.append((decryptedAscii, "Binary to Ascii"))
-    solutions.append((decryptedDecimal, "Binary to Decimal"))
-    solutions.append((decryptedAlph, "Binary to Alphabet"))
+    solutions.append((decryptedAscii, "Ascii to Binary"))
+    solutions.append((decryptedDecimal, "Decimal to Binary"))
+    solutions.append((decryptedAlph, "Alphabet to Binary"))
 
 # Converts octal input to its translations in Ascii, decimal, and letter
 def octal(message):
@@ -498,9 +500,9 @@ def octal(message):
                     tempOctet = tempOctet - 26
                 decryptedAlph += alph[tempOctet - 1]
 
-    solutions.append((decryptedAscii, "Octal to Ascii"))
-    solutions.append((decryptedDecimal, "Octal to Decimal"))
-    solutions.append((decryptedAlph, "Octal to Alphabet"))
+    solutions.append((decryptedAscii, "Ascii to Octal"))
+    solutions.append((decryptedDecimal, "Decimal to Octal"))
+    solutions.append((decryptedAlph, "Alphabet to Octal"))
 
 # Converts hexadecimal input to its translations in Ascii, decimal, and letter
 def hexadecimal(message):
@@ -524,9 +526,9 @@ def hexadecimal(message):
             tempOctet = tempOctet - 26
         decryptedAlph += alph[tempOctet - 1]
 
-    solutions.append((decryptedAscii, "Hexadecimal to Ascii"))
-    solutions.append((decryptedDecimal, "Hexadecimal to Decimal"))
-    solutions.append((decryptedAlph, "Hexadecimal to Alphabet"))
+    solutions.append((decryptedAscii, "Ascii to Hexadecimal"))
+    solutions.append((decryptedDecimal, "Decimal to Hexadecimal"))
+    solutions.append((decryptedAlph, "Alphabet to Hexadecimal"))
 
 # Converts base32 input to its Ascii and decimal translations
 def base32Conversions(message):
@@ -539,8 +541,8 @@ def base32Conversions(message):
     except:
         pass
 
-    solutions.append((decryptedAscii, "Base32 to Ascii"))
-    solutions.append((decryptedDecimal, "Base32 to Decimal"))
+    solutions.append((decryptedAscii, "Ascii to Base32"))
+    solutions.append((decryptedDecimal, "Decimal to Base32"))
 
 # Converts base64 input to its Ascii and decimal translations
 def base64Conversions(message):
@@ -553,8 +555,8 @@ def base64Conversions(message):
     except:
         pass
 
-    solutions.append((decryptedAscii, "Base64 to Ascii"))
-    solutions.append((decryptedDecimal, "Base64 to Decimal"))
+    solutions.append((decryptedAscii, "Ascii to Base64"))
+    solutions.append((decryptedDecimal, "Decimal to Base64"))
 
 # Converts ascii85 input to its Ascii and decimal translations
 def ascii85Conversions(message):
@@ -567,8 +569,8 @@ def ascii85Conversions(message):
     except:
         pass
 
-    solutions.append((decryptedAscii, "Ascii85 to Ascii"))
-    solutions.append((decryptedDecimal, "Ascii85 to Decimal"))
+    solutions.append((decryptedAscii, "Ascii to Ascii85"))
+    solutions.append((decryptedDecimal, "Decimal to Ascii85"))
 
 # Checks if the given string is a valid word
 def wordCheck(possibleWord):
@@ -613,9 +615,10 @@ def solutionCheck(possibleSolution):
         comWordCur.execute("SELECT * FROM WORDS")
         words = comWordCur.fetchall()
         for word in words:
-            if word[0] in possibleSolution:
-                wordsConfirmed += 1
-        if (wordsConfirmed / len(possibleSolution)) >= 0.2:
+            if len(word[0]) > 2:
+                if word[0] in possibleSolution:
+                    wordsConfirmed += 1
+        if (wordsConfirmed / len(possibleSolution)) >= 0.1:
             return True
 
     return False
@@ -676,7 +679,7 @@ def main():
     if re.search('[0-9]', message):
         decimal(message)
     if re.search('[2-9]', message):
-        t9(message)
+        multiTap(message)
     if not re.search('[2-9a-zA-Z]', message):
         binary(message)
     if not re.search('[8-9a-zA-z]', message):
