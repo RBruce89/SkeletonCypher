@@ -11,6 +11,7 @@ Just enter the encrypted text, and Skeleton Cypher takes care of the rest.
 * Alphabet to Qwerty
 * Qwerty to Alphabet
 * Atbash
+* Kamasutra
 * Bacon cipher
 * Rail fence
 * Morse code

@@ -107,6 +107,32 @@ def atbash(message):
 
     solutions.append((decrypted, "Atbash"))
 
+# Deciphers the Kamasutra cipher
+def kamasutra(message):
+    letterPairOne = "fymqgvopdjrak"
+    letterPairTwo = "cieubxtszwnlh"
+    decrypted = ""
+    for char in message:
+        if not char.isalpha():
+            decrypted += char
+            continue
+        for i in range(len(letterPairOne)):
+            if char.lower() == letterPairOne[i]:
+                if char.isupper():
+                    decrypted += letterPairTwo[i].upper()
+                else:
+                    decrypted += letterPairTwo[i]
+                break
+        for i in range(len(letterPairTwo)):
+            if char.lower() == letterPairTwo[i]:
+                if char.isupper():
+                    decrypted += letterPairOne[i].upper()
+                else:
+                    decrypted += letterPairOne[i]
+                break
+
+    solutions.append((decrypted, "Kamasutra"))
+
 # Deciphers Rail Fence ciphers
 def railFence(message):
     # Solve Rail Fence with a key of 2
@@ -671,6 +697,7 @@ def main():
         qwertyShift(message)
         alphQwertySwitcher(message)
         atbash(message)
+        kamasutra(message)
         railFence(message)
     if re.search('[.-]', message):
         morse(message)
