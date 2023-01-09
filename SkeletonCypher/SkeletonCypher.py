@@ -133,6 +133,32 @@ def kamasutra(message):
 
     solutions.append((decrypted, "Kamasutra"))
 
+# Deciphers Skip ciphers to a key of 6
+def skip(message):
+    decrypted = ""
+    numberOfSkips = 0
+    pointer = 0
+    while numberOfSkips < 6:
+        #If the first character is not skipped
+        numberOfSkips += 1
+        decrypted = ""
+        pointer = 0
+        while pointer < len(message):
+            decrypted += message[pointer]
+            pointer += numberOfSkips + 1
+
+        solutions.append((decrypted, "Skip Cipher (key" + str(numberOfSkips) + ")"))
+
+        #If the first character is skipped
+        decrypted = ""
+        pointer = 0
+        while pointer + numberOfSkips < len(message):
+            pointer += numberOfSkips
+            decrypted += message[pointer]
+            pointer += 1
+
+        solutions.append((decrypted, "Skip Cipher (key" + str(numberOfSkips) + ")"))
+
 # Deciphers Rail Fence ciphers
 def railFence(message):
     # Solve Rail Fence with a key of 2
@@ -698,6 +724,7 @@ def main():
         alphQwertySwitcher(message)
         atbash(message)
         kamasutra(message)
+        skip(message)
         railFence(message)
     if re.search('[.-]', message):
         morse(message)
