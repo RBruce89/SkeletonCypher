@@ -107,6 +107,31 @@ def atbash(message):
 
     solutions.append((decrypted, "Atbash"))
 
+# Deciphers Trithemius cipher
+def trithemius(message):
+    decrypted = ""
+    keyCounter = 0
+    pointer = 0
+    for char in message:
+        if not char.isalpha():
+            decrypted += char
+            continue
+        if keyCounter > 25:
+            keyCounter = 0
+        for i in range(len(alph)):
+            if char.lower() == alph[i]:
+                if i - keyCounter < 0:
+                    pointer = i - keyCounter + 26
+                else:
+                    pointer = i - keyCounter
+                if char.islower():
+                    decrypted += alph[pointer]
+                else:
+                    decrypted += alph[pointer].upper()
+        keyCounter += 1
+
+    solutions.append((decrypted, "Trithemius"))
+
 # Deciphers the Kamasutra cipher
 def kamasutra(message):
     letterPairOne = "fymqgvopdjrak"
@@ -723,6 +748,7 @@ def main():
         qwertyShift(message)
         alphQwertySwitcher(message)
         atbash(message)
+        trithemius(message)
         kamasutra(message)
         skip(message)
         railFence(message)
